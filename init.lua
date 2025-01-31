@@ -19,7 +19,13 @@
 ========                                                     ========
 =====================================================================
 =====================================================================
-
+          ***************************************************
+          * This is clone of Kickstart.nvim by TJ and       *
+          * I have created a fork from master branch.       *
+          * I have also created a new development branch    *
+          * for my changes, I may merge those in master of  *
+          * of my cloned Kickstart.nvim repo.               *
+          ***************************************************
 What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
