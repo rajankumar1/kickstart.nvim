@@ -162,6 +162,17 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.opt.fillchars:append {
+  vert = '│', -- Vertical split separator (default is '|')
+  horiz = '─', -- Horizontal split separator
+  eob = ' ', -- Hide the '~' characters at the end of buffers
+  horizup = '┴', -- Upward intersection
+  horizdown = '┬', -- Downward intersection
+  vertleft = '┤', -- Left intersection
+  vertright = '├', -- Right intersection
+  verthoriz = '┼', -- Cross intersection
+}
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -181,10 +192,13 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+
+-- Remap CapsLock to Esc in all modes (i.e. '')
+vim.keymap.set('', '<C-[>', '<Esc>', { desc = 'Use CapsLock to Esc' })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -235,6 +249,21 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  {
+    'prichrd/netrw.nvim',
+    config = function()
+      require('netrw').setup {
+        -- Example configuration options
+        icons = {
+          symlink = '', -- Customize symlink icon
+          directory = '', -- Customize directory icon
+          file = '', -- Customize file icon
+        },
+        use_devicons = true, -- Enable devicons if you have 'nvim-web-devicons'
+        mappings = {}, -- You can customize key mappings here
+      }
+    end,
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -332,6 +361,8 @@ require('lazy').setup({
     },
   },
 
+  {},
+
   -- NOTE: Plugins can specify dependencies.
   --
   -- The dependencies are proper plugin specifications as well - anything
@@ -405,6 +436,8 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+
+      vim.keymap.set('n', '<leader>e', ':Lex 30<CR>', { noremap = true, silent = true })
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
